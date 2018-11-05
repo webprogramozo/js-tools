@@ -9,16 +9,18 @@ var findValueInObject = (function(){
             }
             let innerPath = path.slice(0);
             innerPath.push(key);
-            let value = object[key],
-                thisValueType = typeof value;
-            if(validTypes.indexOf(thisValueType) !== -1){
-                if(!matchType || valueType === thisValueType){
-                    if(contain ? value.toString().indexOf(valueToFind.toString()) !== -1 : value.toString() === valueToFind.toString()){
-                        callback(innerPath);
+            try{
+                let value = object[key],
+                    thisValueType = typeof value;
+                if(validTypes.indexOf(thisValueType) !== -1){
+                    if(!matchType || valueType === thisValueType){
+                        if(contain ? value.toString().indexOf(valueToFind.toString()) !== -1 : value.toString() === valueToFind.toString()){
+                            callback(innerPath);
+                        }
                     }
                 }
-            }
-            innerFinderFunction(object[key], valueToFind, valueType, matchType, contain, allProperties, innerPath, map, callback);
+                innerFinderFunction(object[key], valueToFind, valueType, matchType, contain, allProperties, innerPath, map, callback);
+            }catch(e){}
         }
     }
     return function(object, valueToFind, matchType, contain, allProperties){
